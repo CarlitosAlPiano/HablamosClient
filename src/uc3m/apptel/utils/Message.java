@@ -1,8 +1,6 @@
 package uc3m.apptel.utils;
 
 import java.util.Arrays;
-/*import java.nio.ByteBuffer;
-import java.nio.ByteOrder;*/
 
 public class Message {
 	private EnumCommand cmd;
