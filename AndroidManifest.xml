@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +18,7 @@
         <activity
             android:name="uc3m.apptel.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme" >
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,6 +33,14 @@
         <activity
             android:name="uc3m.apptel.UserListActivity"
             android:label="@string/title_activity_user_list" >
+        </activity>
+        <activity
+            android:name="uc3m.apptel.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:parentActivityName="uc3m.apptel.UserListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uc3m.apptel.UserListActivity" />
         </activity>
     </application>
 
