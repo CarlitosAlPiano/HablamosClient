@@ -4,13 +4,11 @@
     <string name="app_name">Hablamos</string>
     <string name="title_activity_user_list">Usuarios conectados</string>
     <string name="action_settings">Settings</string>
-    <string name="icono_de_hablamos">Icono de Hablamos</string>
     <string name="enviar_mensaje">Enviar mensaje</string>
-    <string name="debugBtnConnect">Concectar con ese ID</string>
-    <string name="title_activity_chat">ChatActivity</string>
-    <string name="title_section1">1001</string>
-    <string name="title_section2">1002</string>
-    <string name="title_section3">1003</string>
+    <string name="estado_mensaje">Estado del mensaje</string>
+    <string name="foto_usuario">Foto del usuario</string>
+    <string name="btn_connect">Concectar con este ID</string>
     <string name="hint_user_id">[ID de usuario]</string>
+    <string name="chat_with_new_user">Hablar con otro usuario</string>
 
 </resources>

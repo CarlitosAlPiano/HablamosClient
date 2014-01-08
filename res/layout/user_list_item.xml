@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserListActivity" >
+
+    <ImageView
+        android:id="@+id/userPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/userLastMessage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/foto_usuario"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:src="@android:drawable/stat_notify_chat" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/userPicture"
+        android:background="@android:color/transparent"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/orange"
+        android:textSize="20sp" />
+
+    <include
+        android:id="@+id/userLastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userName"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/userPicture"
+        layout="@layout/chat_list_item"
+        android:background="@android:color/transparent" />
+
+</RelativeLayout>

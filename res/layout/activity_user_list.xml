@@ -1,83 +1,46 @@
-    <TableLayout
-        android:id="@+id/listaUsuarios"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:tools="http://schemas.android.com/tools"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:paddingBottom="@dimen/activity_vertical_margin"
-		android:paddingLeft="@dimen/activity_horizontal_margin"
-		android:paddingRight="@dimen/activity_horizontal_margin"
-		android:paddingTop="@dimen/activity_vertical_margin"
-		tools:context=".UserListActivity"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".UserListActivity" >
 
-        <TableRow
-            android:id="@+id/fila1000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="fila_onClick" >
+    <TextView
+        android:id="@+id/txtHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnChatWithNewUser"
+        android:background="@color/orange"
+        android:drawableLeft="@drawable/ic_launcher"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/app_name"
+        android:textColor="@color/app_background"
+        android:textSize="14pt" />
 
-            <TextView
-                android:id="@+id/txt1000"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Tu usuario es el: "
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            
-            <TextView
-                android:id="@+id/txtMyID"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="0."
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+    <ImageButton
+        android:id="@+id/btnChatWithNewUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtHeader"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/chat_with_new_user"
+        android:onClick="btnChatWithNewUser_onClick"
+        android:src="@android:drawable/sym_action_chat" />
 
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/fila1001"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="fila_onClick" >
+    <ListView
+        android:id="@+id/lstUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/txtHeader"
+        android:layout_marginTop="5dp"
+        android:background="@color/orange"
+        android:drawSelectorOnTop="true"
+        android:listSelector="#4040DD00" >
+    </ListView>
 
-            <TextView
-                android:id="@+id/txt1001"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Hablar con el 1001"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/fila1002"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="fila_onClick" >
-            
-            <TextView
-                android:id="@+id/txt1002"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Hablar con el 1002"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/fila1003"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="fila_onClick" >
-            
-            <TextView
-                android:id="@+id/txt1003"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Hablar con el 1003"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-            
-        </TableRow>
-    </TableLayout>
+</RelativeLayout>

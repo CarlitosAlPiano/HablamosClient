@@ -1,7 +1,6 @@
 package uc3m.apptel.utils;
 
 import java.util.List;
-
 import uc3m.apptel.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,50 +19,79 @@ public class ChatListAdapter extends ArrayAdapter<ChatListItem> {
 		super(context, textViewResourceId);
 	}
 
-	public ChatListAdapter(Context context, int resource,
-			List<ChatListItem> items) {
+	public ChatListAdapter(Context context, int resource, List<ChatListItem> items) {
 		super(context, resource, items);
-
 		this.items = items;
 	}
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
-		ChatListItem item = items.get(position);
+	private String limitMsgText(String origTxt) {
+		String txt = origTxt;
+		boolean isPartialText = false;
+		int pos, txtLimit = 30;
 
-		if (v == null) {
-			LayoutInflater vi;
-			vi = LayoutInflater.from(getContext());
-			v = vi.inflate(R.layout.chat_list_item, null);
+		if ((pos = txt.indexOf('\n')) >= 0) {
+			txt = txt.substring(0, pos);
+			isPartialText = true;
+		}
+		if (txt.length() > txtLimit) {
+			pos = txt.lastIndexOf(' ', txtLimit);
+			if (pos < 0) {
+				txt = txt.substring(0, txtLimit);
+			} else {
+				txt = txt.substring(0, pos);
+			}
+			isPartialText = true;
+		}
+		if (isPartialText) {
+			txt += "...";
 		}
 
-		if (item != null) {
-			TextView txt = (TextView) v.findViewById(R.id.chatItemTxtMessage);
-			ImageView img = (ImageView) v.findViewById(R.id.chatItemImgMessage);
+		return txt;
+	}
 
-			txt.setText(item.getMsg());
+	public void inflate(int position, TextView txt, ImageView img, boolean changeLayout) {
+		if (position < 0) {
+			txt.setText("Escríbele algo a tu amigo.");
+			img.setImageResource(android.R.drawable.ic_menu_edit);
+			return;
+		}
+		ChatListItem item = items.get(position);
+		LayoutParams paramsImg = new LayoutParams(LayoutParams.WRAP_CONTENT, img.getLayoutParams().height);
+		LayoutParams paramsTxt = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+		if (item != null) {
+			txt.setText(changeLayout ? item.getMsg() : limitMsgText(item.getMsg()));
 			if (item.wasSentByUser()) {
-				if(item.hasTick2()) {
+				if (item.hasTick2()) {
 					img.setImageResource(android.R.drawable.ic_media_ff);
-				} else if(item.hasTick1()) {
+				} else if (item.hasTick1()) {
 					img.setImageResource(android.R.drawable.ic_media_play);
 				} else {
 					img.setImageResource(android.R.drawable.ic_media_pause);
 				}
 			} else {
-				LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, img.getLayoutParams().height);
-				params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
-				img.setLayoutParams(params);
 				img.setImageResource(android.R.drawable.ic_media_rew);
-				
-				params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-				params.addRule(RelativeLayout.LEFT_OF, R.id.chatItemImgMessage);
-				txt.setLayoutParams(params);
+			}
+
+			if (changeLayout) {
+				paramsImg.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+				paramsImg.addRule(item.wasSentByUser() ? RelativeLayout.ALIGN_PARENT_LEFT : RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+				img.setLayoutParams(paramsImg);
+				paramsTxt.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+				paramsTxt.addRule(item.wasSentByUser() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF, R.id.chatItemImgMessage);
+				txt.setLayoutParams(paramsTxt);
 			}
 		}
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View v = convertView;
+
+		if (v == null) {
+			v = LayoutInflater.from(getContext()).inflate(R.layout.chat_list_item, null);
+		}
+		inflate(position, (TextView) v.findViewById(R.id.chatItemTxtMessage), (ImageView) v.findViewById(R.id.chatItemImgMessage), true);
 
 		return v;
 	}

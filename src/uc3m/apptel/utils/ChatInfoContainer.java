@@ -1,9 +1,6 @@
 package uc3m.apptel.utils;
 
 import java.util.ArrayList;
-
-import uc3m.apptel.ChatActivity.ChatFragment;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 

@@ -14,37 +14,40 @@ import uc3m.apptel.utils.EnumCommand;
 import uc3m.apptel.utils.EnumPayload;
 import uc3m.apptel.utils.Message;
 import uc3m.apptel.utils.UserInfo;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
 
 public class Client extends Thread {
-	private static final String TAG = "HablamosClient";
+	private static final String TAG = "Hablamos"; // mainAct.getString(R.string.app_name)
 	private static final int PORT = 8888;
 	private static final String IP = "5.231.82.25";
 	static CopyOnWriteArrayList<Message> msgsToSend = new CopyOnWriteArrayList<Message>();
 	private UserInfo uInfo = null;
-	private Activity mainAct;
+	private MainActivity mainAct;
 	private int userId;
 
-	public Client(Activity mainAct, int userId) {
+	public Client(MainActivity mainAct, int userId) {
 		this.mainAct = mainAct;
 		this.userId = userId;
 	}
-	
-	private void runOnUI(ChatInfoContainer auxTab, Message msg, boolean addMessage) {
-		int indTab = ChatActivity.chatInfos.indexOf(auxTab);
+
+	private void runOnUI(ChatInfoContainer auxTab, Message msg, boolean addMessage) throws Exception {
+		int indTab = UserListActivity.getChatInfos().indexOf(auxTab);
 
 		if (indTab < 0) {
-			mainAct.runOnUiThread(new ChatTabAdder(msg.getOrigId()));
-			while(!ChatActivity.chatInfos.contains(auxTab));
-			indTab = ChatActivity.chatInfos.indexOf(auxTab);
+			while(UserListActivity.getInstance() == null) {
+				Client.sleep(10);
+			}
+			mainAct.runOnUiThread(new UserListItemAdder(msg.getOrigId()));
+			while ((indTab = UserListActivity.getChatInfos().indexOf(auxTab)) < 0) {
+				Client.sleep(10);
+			}
 		}
 		if (addMessage) {
-			while(ChatActivity.chatInfos.get(indTab).getListAdapter() == null);
-			mainAct.runOnUiThread(new ChatMessageAdder(ChatActivity.chatInfos.get(indTab).getListAdapter(), msg));
+			mainAct.runOnUiThread(new ChatMessageAdder(UserListActivity.getChatInfos().get(indTab).getListAdapter(), msg));
 		} else {
-			mainAct.runOnUiThread(new ChatTickAdder(ChatActivity.chatInfos.get(indTab), msg.getMsgId()));
+			mainAct.runOnUiThread(new ChatTickAdder(UserListActivity.getChatInfos().get(indTab), msg.getMsgId()));
 		}
 	}
 
@@ -53,7 +56,6 @@ public class Client extends Thread {
 		Message msg = null;
 		ChatInfoContainer auxTab = new ChatInfoContainer(0);
 
-		Log.i(TAG, "Conectando con el servidor...");
 		try {
 			uInfo = new UserInfo(userId, SocketChannel.open(new InetSocketAddress(InetAddress.getByName(IP), PORT)));
 			uInfo.getSock().configureBlocking(false);
@@ -78,7 +80,8 @@ public class Client extends Thread {
 					case CMD_SEND:
 						Log.i(TAG, "Mensaje recibido!! :)");
 						runOnUI(auxTab, msg, true);
-						msgsToSend.add(new Message(EnumCommand.SUCC_ANSWER_TO_SEND, Message.VERSION, Message.HEADER_LEN, msg.getDestId(), msg.getOrigId(), msg.getMsgId(), EnumPayload.PAYLOAD_EMPTY, null));
+						msgsToSend.add(new Message(EnumCommand.SUCC_ANSWER_TO_SEND, Message.VERSION, Message.HEADER_LEN, msg.getDestId(), msg
+								.getOrigId(), msg.getMsgId(), EnumPayload.PAYLOAD_EMPTY, null));
 						break;
 					case SUCC_ANSWER_TO_SEND:
 						Log.i(TAG, "Primer tick");
@@ -91,17 +94,25 @@ public class Client extends Thread {
 					case CMD_DELIVERED:
 						Log.i(TAG, "Segundo tick");
 						runOnUI(auxTab, msg, false);
-						msgsToSend.add(new Message(EnumCommand.SUCC_ANSWER_TO_DELIVERED, Message.VERSION, Message.HEADER_LEN, msg.getDestId(), msg.getOrigId(), msg.getMsgId(), EnumPayload.PAYLOAD_EMPTY, null));
+						msgsToSend.add(new Message(EnumCommand.SUCC_ANSWER_TO_DELIVERED, Message.VERSION, Message.HEADER_LEN, msg.getDestId(), msg
+								.getOrigId(), msg.getMsgId(), EnumPayload.PAYLOAD_EMPTY, null));
 						break;
 					case SUCC_ANSWER_TO_REGISTER:
 						Log.i(TAG, "Conectado correctamente");
-						Intent intent = new Intent(mainAct, ChatActivity.class); // UserListActivity.class
-						intent.putExtra(ChatActivity.ARG_USER_ID, userId);
+						mainAct.enableBtnConnect();
+
+						Intent intent = new Intent(mainAct, UserListActivity.class);
+						intent.putExtra(UserListActivity.ARG_USER_ID, userId);
 						mainAct.startActivity(intent);
-						Client.sleep(10);
+						mainAct.finish();
 						break;
 					case ERR_ANSWER_TO_REGISTER:
 						Log.w(TAG, "Error en register");
+						mainAct.enableBtnConnect();
+
+						mainAct.runOnUiThread(new AlertDialogShow(new AlertDialog.Builder(mainAct).setTitle("Error!")
+								.setMessage("No ha sido posible iniciar sesión con el id " + userId + ".\nPor favor, pruebe con otro id.")
+								.setPositiveButton(android.R.string.ok, null).setIcon(android.R.drawable.ic_dialog_alert)));
 						break;
 					case SUCC_ANSWER_TO_UNREGISTER:
 						Log.i(TAG, "Desconectado correctamente");
@@ -124,17 +135,30 @@ public class Client extends Thread {
 		}
 	}
 
-	private class ChatTabAdder implements Runnable {
+	private class AlertDialogShow implements Runnable {
+		private AlertDialog.Builder builder;
+
+		public AlertDialogShow(AlertDialog.Builder builder) {
+			this.builder = builder;
+		}
+
+		@Override
+		public void run() {
+			builder.show();
+		}
+
+	}
+
+	private class UserListItemAdder implements Runnable {
 		private int id;
 
-		public ChatTabAdder(int id) {
+		public UserListItemAdder(int id) {
 			this.id = id;
 		}
 
 		@Override
 		public void run() {
-			ChatActivity.chatInfos.add(new ChatInfoContainer(id));
-			ChatActivity.tabsAdapter.notifyDataSetChanged();
+			UserListActivity.addUser(id, false);
 		}
 
 	}
@@ -152,6 +176,8 @@ public class Client extends Thread {
 		public void run() {
 			lstAdapter.add(new ChatListItem(false, msg.getMsgId(), new String(msg.getPayload())));
 			lstAdapter.notifyDataSetChanged();
+			ChatActivity.scrollDownList();
+			UserListActivity.updateList();
 		}
 
 	}
@@ -175,8 +201,11 @@ public class Client extends Thread {
 				} else {
 					chatInfo.getMsgs().get(pos).setTick1();
 				}
-			} else {Log.w(TAG,"Received tick but couldn't find message with mId " + msgId);}
+			} else {
+				Log.w(TAG, "Received tick but couldn't find message with mId " + msgId);
+			}
 			chatInfo.getListAdapter().notifyDataSetChanged();
+			UserListActivity.updateList();
 		}
 
 	}
