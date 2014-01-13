@@ -536,11 +536,12 @@ public class Client extends IntentService {
 
 		private void iterate() {
 			Iterator<Message> it = msgsToSend.iterator();
-			int i;
+			int pos;
 
 			while (it.hasNext()) {
-				if ((i = msgsToSend.indexOf(it.next())) >= 0)
-					sendMsg(msgsToSend.remove(i));
+				if ((pos = msgsToSend.indexOf(it.next())) >= 0) {
+					sendMsg(msgsToSend.remove(pos));
+				}
 			}
 		}
 
@@ -548,9 +549,11 @@ public class Client extends IntentService {
 		public void run() {
 			while (!wantToExit) {
 				iterate();
-				try {
-					sleep(50);
-				} catch (Exception e) {
+				synchronized (this) {
+					try {
+						sleep(100);
+					} catch (Exception e) {
+					}
 				}
 			}
 			iterate();

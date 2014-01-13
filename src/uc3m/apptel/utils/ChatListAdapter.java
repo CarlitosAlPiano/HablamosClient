@@ -89,6 +89,7 @@ public class ChatListAdapter extends ArrayAdapter<ChatListItem> {
 				img.setLayoutParams(paramsImg);
 				txt.setLayoutParams(paramsTxt);
 				date.setLayoutParams(paramsDate);
+				txt.setMaxLines(5);
 			} else {
 				txt.setMaxLines(1);
 				txt.setEllipsize(TruncateAt.END);
