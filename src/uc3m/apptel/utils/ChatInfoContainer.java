@@ -1,14 +1,19 @@
 package uc3m.apptel.utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+
+import uc3m.apptel.Client;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.Time;
 
 public class ChatInfoContainer implements Parcelable {
 	private int destId;
 	private ArrayList<ChatListItem> msgs;
 	private ChatListAdapter lstAdapter = null;
 	private int msgId;
+	private int unreadMsgs;
 
 	// Constructor to call from ChatActivity
 	public ChatInfoContainer(int destId) {
@@ -47,6 +52,10 @@ public class ChatInfoContainer implements Parcelable {
 		return destId;
 	}
 
+	public void setDestId(int destId) {
+		this.destId = destId;
+	}
+
 	public ChatListAdapter getListAdapter() {
 		return lstAdapter;
 	}
@@ -55,12 +64,43 @@ public class ChatInfoContainer implements Parcelable {
 		return msgs;
 	}
 
-	public void setDestId(int destId) {
-		this.destId = destId;
-	}
-
 	public void setListAdapter(ChatListAdapter lstAdapter) {
 		this.lstAdapter = lstAdapter;
+	}
+
+	public int getMsgId() {
+		return msgId;
+	}
+
+	public void incMsgId() {
+		this.msgId++;
+	}
+
+	public int getUnread() {
+		return unreadMsgs;
+	}
+
+	public void incUnread() {
+		this.unreadMsgs++;
+	}
+
+	public void rstUnread() {
+		this.unreadMsgs = 0;
+	}
+
+	public Message getLastMsg() {
+		return getOriginalMsg(msgs.size() - 1);
+	}
+
+	public Message getOriginalMsg(int pos) {
+		ChatListItem item = msgs.get(pos);
+		if (item.wasSentByUser()) {
+			return new Message(EnumCommand.CMD_SEND, Message.VERSION, Message.HEADER_LEN + item.getMsg().length(), Client.getUserId(), destId,
+					item.getMsgId(), EnumPayload.PAYLOAD_TEXT, item.getMsg().getBytes());
+		} else {
+			return new Message(EnumCommand.CMD_SEND, Message.VERSION, Message.HEADER_LEN + item.getMsg().length(), destId, Client.getUserId(),
+					item.getMsgId(), EnumPayload.PAYLOAD_TEXT, item.getMsg().getBytes());
+		}
 	}
 
 	@Override
@@ -80,12 +120,26 @@ public class ChatInfoContainer implements Parcelable {
 		return retVal;
 	}
 
-	public int getMsgId() {
-		return msgId;
-	}
+	public static class Comparador implements Comparator<ChatInfoContainer> {
+		@Override
+		public int compare(ChatInfoContainer lhs, ChatInfoContainer rhs) {
+			ArrayList<ChatListItem> msgsLhs = lhs.getMsgs(), msgsRhs = rhs.getMsgs();
+			int numMsgsLhs = msgsLhs.size(), numMsgsRhs = msgsRhs.size();
 
-	public void incMsgId() {
-		this.msgId++;
+			if (numMsgsLhs > 0 && numMsgsRhs <= 0) {
+				return -1;
+			} else if (numMsgsLhs <= 0 && numMsgsRhs <= 0) {
+				/*
+				 * if (lhs.getDestId() == rhs.getDestId()) return 0;
+				 * else return (lhs.getDestId() > rhs.getDestId()) ? 1 : -1;
+				 */
+				return 0;
+			} else if (numMsgsLhs <= 0 && numMsgsRhs > 0) {
+				return 1;
+			} else {
+				return -Time.compare(msgsLhs.get(numMsgsLhs - 1).getTime(), msgsRhs.get(numMsgsRhs - 1).getTime());
+			}
+		}
 	}
 
 }

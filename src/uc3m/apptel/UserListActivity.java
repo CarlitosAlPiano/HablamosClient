@@ -1,97 +1,99 @@
 package uc3m.apptel;
 
-import java.util.ArrayList;
-
 import uc3m.apptel.utils.ChatInfoContainer;
-import uc3m.apptel.utils.ChatListAdapter;
-import uc3m.apptel.utils.UserListAdapter;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.michaelnovakjr.numberpicker.NumberPicker;
+import com.michaelnovakjr.numberpicker.NumberPickerDialog;
+import com.michaelnovakjr.numberpicker.NumberPickerDialog.OnNumberSetListener;
 
 public class UserListActivity extends Activity {
-	public static final String ARG_USER_ID = "user_id";
-	public static final int DEF_USER_ID = 0;
-	private static int userId;
 	private ListView lst;
-	private static UserListAdapter lstAdapter = null;
-	private static ArrayList<ChatInfoContainer> chatInfos = new ArrayList<ChatInfoContainer>();
-	private static UserListActivity instance;
-
-	public UserListActivity() {
-		instance = this;
-	}
-
-	public static UserListActivity getInstance() {
-		return instance;
-	}
-
-	public static int getUserId() {
-		return userId;
-	}
-
-	public static ArrayList<ChatInfoContainer> getChatInfos() {
-		return chatInfos;
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_list);
 
-		userId = getIntent().getIntExtra(ARG_USER_ID, DEF_USER_ID);
-		getSharedPreferences(ARG_USER_ID, MODE_PRIVATE).edit().putInt(ARG_USER_ID, userId).commit();
 		lst = (ListView) findViewById(R.id.lstUsers);
-		lstAdapter = new UserListAdapter(this, R.layout.chat_list_item, chatInfos);
-		lst.setAdapter(lstAdapter);
+		lst.setAdapter(Client.getUserLstAdapter());
 		lst.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				openUser(position);
+				Client.openUserToChatWith(position);
 			}
 		});
 	}
 
-	public static void addUser(int destId, boolean openUser) {
-		ChatInfoContainer cic = new ChatInfoContainer(destId);
-
-		cic.setListAdapter(new ChatListAdapter(getInstance(), R.layout.chat_list_item, cic.getMsgs()));
-		lstAdapter.insert(cic, 0);
-		lstAdapter.notifyDataSetChanged();
-		if (openUser)
-			openUser(0);
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Client.setUserListAct(this);
+		Client.sortUserList();
 	}
 
-	public static void removeUser(ChatInfoContainer chatInfo) {
-		lstAdapter.remove(chatInfo);
-		lstAdapter.notifyDataSetChanged();
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Client.setUserListAct(null);
 	}
 
-	public static void openUser(int position) {
-		Intent intent = new Intent(getInstance(), ChatActivity.class);
-		intent.putExtra(ChatActivity.ARG_CHAT_INFO, position);
-		getInstance().startActivity(intent);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.user_list, menu);
+		return true;
 	}
 
-	public static void updateList() {
-		lstAdapter.notifyDataSetChanged();
-	}
-
-	public static void sortList() {
-		updateList();
-	}
-
-	public void btnChatWithNewUser_onClick(View view) {
-		int uId = 1001;
-
-		while (chatInfos.contains(new ChatInfoContainer(uId)) || uId == userId) {
-			uId++;
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_unregister:
+			Client.exit();
+			finish();
+			return true;
+		case R.id.action_new_user:
+			chatWithNewUser();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		addUser(uId, true);
+	}
+	
+	private void chatWithNewUser() {
+		NumberPickerDialog dialog;
+		NumberPicker np;
+
+		dialog = new NumberPickerDialog(this, 0, 0, "¿Con quién quieres hablar?", getText(android.R.string.ok), getText(android.R.string.cancel));
+		np = dialog.getNumberPicker();
+		np.setRange(Client.MIN_USER_ID, Client.MAX_USER_ID);
+		np.setWrap(true);
+		dialog.setOnNumberSetListener(new OnNumberSetListener() {
+			@Override
+			public void onNumberSet(int selectedNumber) {
+				int pos;
+
+				if (selectedNumber == Client.getUserId()) {
+					Toast.makeText(Client.getUserListAct(), "¡No puedes hablar contigo mismo!", Toast.LENGTH_SHORT).show();
+				} else if (selectedNumber < Client.MIN_USER_ID || selectedNumber > Client.MAX_USER_ID) {
+					Toast.makeText(Client.getUserListAct(), "¡Introduce un id válido!", Toast.LENGTH_SHORT).show();
+				} else if ((pos = Client.getChatInfos().indexOf(new ChatInfoContainer(selectedNumber))) >= 0) {
+					Client.openUserToChatWith(pos);
+				} else {
+					Client.addUserToUsrList(selectedNumber, true);
+				}
+			}
+		});
+		dialog.show();
 	}
 
 }

@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/ListItem.UserList"
     tools:context=".UserListActivity" >
 
     <ImageView
@@ -11,10 +10,8 @@
         android:layout_alignBottom="@+id/userLastMessage"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@android:color/transparent"
+        android:layout_marginRight="10dp"
         android:contentDescription="@string/foto_usuario"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
         android:src="@android:drawable/stat_notify_chat" />
 
     <TextView
@@ -22,12 +19,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/userDateLastMessage"
         android:layout_toRightOf="@id/userPicture"
-        android:background="@android:color/transparent"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        android:textColor="@color/orange"
+        android:gravity="top"
+        android:textColor="@color/rojo_fuerte"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/userDateLastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/userName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:textColor="@color/gris_azulado" />
 
     <include
         android:id="@+id/userLastMessage"
@@ -35,8 +41,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/userName"
         android:layout_marginLeft="5dp"
+        android:layout_toLeftOf="@+id/userNumUnreadMessages"
         android:layout_toRightOf="@id/userPicture"
-        layout="@layout/chat_list_item"
-        android:background="@android:color/transparent" />
+        layout="@layout/chat_list_item" />
+
+    <TextView
+        android:id="@+id/userNumUnreadMessages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/userLastMessage"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/userLastMessage"
+        android:layout_marginLeft="10dp"
+        android:gravity="top|center_horizontal"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

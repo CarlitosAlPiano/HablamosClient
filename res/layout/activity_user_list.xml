@@ -1,46 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp"
+    style="@style/Activity.Any"
     tools:context=".UserListActivity" >
-
-    <TextView
-        android:id="@+id/txtHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/btnChatWithNewUser"
-        android:background="@color/orange"
-        android:drawableLeft="@drawable/ic_launcher"
-        android:drawablePadding="20dp"
-        android:gravity="center_vertical"
-        android:text="@string/app_name"
-        android:textColor="@color/app_background"
-        android:textSize="14pt" />
-
-    <ImageButton
-        android:id="@+id/btnChatWithNewUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/txtHeader"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:contentDescription="@string/chat_with_new_user"
-        android:onClick="btnChatWithNewUser_onClick"
-        android:src="@android:drawable/sym_action_chat" />
 
     <ListView
         android:id="@+id/lstUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/txtHeader"
-        android:layout_marginTop="5dp"
-        android:background="@color/orange"
-        android:drawSelectorOnTop="true"
-        android:listSelector="#4040DD00" >
+        style="@style/ListView.Selectable" >
     </ListView>
 
 </RelativeLayout>

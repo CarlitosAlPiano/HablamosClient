@@ -53,24 +53,15 @@ public class ChatListItem {
 		return msg;
 	}
 
-	/*public void setSentByUser(boolean sentByUser) {
-		this.sentByUser = sentByUser;
-	}
-
-	public void setMsgId(int msgId) {
-		this.msgId = msgId;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}*/
-	
 	@Override
 	public boolean equals(Object obj) {
 		boolean retVal = false;
 
 		if (obj instanceof ChatListItem) {
-			retVal = (((ChatListItem) obj).getMsgId() == this.getMsgId());
+			ChatListItem item = (ChatListItem) obj;
+			if (item.wasSentByUser()) {
+				retVal = (item.getMsgId() == this.getMsgId());
+			}
 		}
 
 		return retVal;

@@ -1,50 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
+    style="@style/Activity.Splash"
     tools:context=".MainActivity" >
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/SplashText"
         android:layout_above="@+id/txtUsuario"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:drawableLeft="@drawable/ic_launcher"
-        android:drawablePadding="20dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="@string/app_name"
-        android:textColor="@color/yellow"
-        android:textSize="50sp" />
+        android:layout_alignParentTop="true" />
 
     <EditText
         android:id="@+id/txtUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnConnect"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/yellow"
-        android:hint="@string/hint_user_id"
-        android:inputType="number"
-        android:paddingBottom="2dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="2dp"
-        android:textColor="@color/black_overlay"
-        android:textCursorDrawable="@null"
-        android:textSize="20sp" />
+        style="@style/EditText.Splash"
+        android:layout_above="@+id/btnConnect" >
+
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/btnConnect"
-        style="@style/Boton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:onClick="btnConnect_onClick"
-        android:text="@string/btn_connect"
-        android:textSize="18sp" />
+        style="@style/BotonOscuro.Splash"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

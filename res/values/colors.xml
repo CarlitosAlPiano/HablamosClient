@@ -1,10 +1,21 @@
 <resources>
 
-    <color name="app_background">#0099cc</color>
+    <color name="app_bgnd">#A033B5E5</color>
     <color name="black_overlay">#66000000</color>
-    <color name="black">#000</color>
-    <color name="yellow">#FF0</color>
-    <color name="orange">#FC4</color>
     <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="gris_azulado">#DDF</color>
+    <color name="amarillo">#FF0</color>
+    <color name="orange">#FC4</color>
+    <color name="azul_debil">#33B5E5</color>
+    <color name="morado_debil">#AA66CC</color>
+    <color name="verde_debil">#99CC00</color>
+    <color name="naranja_debil">#FFBB33</color>
+    <color name="rojo_debil">#FF4444</color>
+    <color name="azul_fuerte">#0099CC</color>
+    <color name="morado_fuerte">#9933CC</color>
+    <color name="verde_fuerte">#669900</color>
+    <color name="naranja_fuerte">#FF8800</color>
+    <color name="rojo_fuerte">#CC0000</color>
 
 </resources>

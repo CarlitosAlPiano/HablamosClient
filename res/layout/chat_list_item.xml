@@ -1,26 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/ListItem"
     tools:context=".ChatActivity" >
 
     <ImageView
         android:id="@+id/chatItemImgMessage"
         android:layout_width="wrap_content"
-        android:layout_height="22sp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/chatItemDateMessage"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:contentDescription="@string/estado_mensaje" />
 
     <TextView
         android:id="@+id/chatItemTxtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/chatItemDateMessage"
         android:layout_toRightOf="@id/chatItemImgMessage"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/chatItemDateMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/gris_azulado" />
 
 </RelativeLayout>

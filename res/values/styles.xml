@@ -1,21 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Holo.NoActionBar">
-        <item name="android:background">@color/app_background</item>
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:actionBarStyle">@style/ActionBar</item>
     </style>
-    
-    <style name="Boton">
-        <item name="android:background">@color/black_overlay</item>
+
+    <style name="SplashTheme" parent="android:Theme.Holo.Light.NoActionBar"></style>
+
+    <style name="Activity">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingTop">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/activity_vertical_margin</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+    </style>
+
+    <style name="Activity.Splash">
+        <item name="android:background">@color/naranja_debil</item>
+    </style>
+
+    <style name="Activity.Any">
+        <item name="android:background">@color/app_bgnd</item>
+    </style>
+
+    <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/azul_fuerte</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
+    </style>
+
+    <style name="ActionBarTitle" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="BotonOscuro">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">2dp</item>
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="LoginFormContainer">
+    <style name="BotonOscuro.Splash">
+        <item name="android:text">@string/btn_connect</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:enabled">true</item>
+    </style>
+
+    <style name="BotonOscuro.Splash.Disabled">
+        <item name="android:text">@string/btn_connecting</item>
+        <item name="android:textColor">@color/black_overlay</item>
+        <item name="android:enabled">false</item>
+    </style>
+
+    <style name="SplashText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:drawableLeft">@drawable/ic_launcher</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textColor">@color/amarillo</item>
+        <item name="android:textSize">50sp</item>
+    </style>
+
+    <style name="EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="EditText.Splash">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">@color/amarillo</item>
+        <item name="android:hint">@string/hint_user_id</item>
+        <item name="android:inputType">number</item>
+        <item name="android:textColor">@color/black_overlay</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="EditText.MultiLine">
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:maxLines">5</item>
+        <item name="android:minLines">1</item>
+    </style>
+
+    <style name="ListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/app_bgnd</item>
+    </style>
+
+    <style name="ListView.Selectable">
+        <item name="android:drawSelectorOnTop">true</item>
+    </style>
+    
+    <style name="ListItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/azul_debil</item>
+    </style>
+    
+    <style name="ListItem.Selected">
+        <item name="android:background">@color/azul_fuerte</item>
+    </style>
+    
+    <style name="ListItem.UserList">
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
     </style>
 
 </resources>
