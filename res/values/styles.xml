@@ -17,7 +17,7 @@
     </style>
 
     <style name="Activity.Splash">
-        <item name="android:background">@color/naranja_debil</item>
+        <item name="android:background">@color/verde_debil</item>
     </style>
 
     <style name="Activity.Any">
@@ -25,7 +25,7 @@
     </style>
 
     <style name="ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/azul_fuerte</item>
+        <item name="android:background">@color/rojo_debil</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:titleTextStyle">@style/ActionBarTitle</item>
     </style>

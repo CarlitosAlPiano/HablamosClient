@@ -282,7 +282,7 @@ public class Client extends IntentService {
 		PendingIntent pIntent = PendingIntent.getActivity(instance, 0, intent, 0);
 		Notification.Builder n = new Notification.Builder(instance).setContentIntent(pIntent).setAutoCancel(true)
 				.setLights(NOTIF_COLOR, NOTIF_MS_LIGHT_ON, NOTIF_MS_LIGHT_OFF).setNumber(numUnreadMsgs).setOnlyAlertOnce(false)
-				.setSmallIcon(R.drawable.ic_launcher);
+				.setSmallIcon(R.drawable.ic_stat_azul);
 		if (msg != null) {
 			n = n.setTicker(msg.getOrigId() + ": " + new String(msg.getPayload())).setVibrate(VIB_PATTERN);
 		}
